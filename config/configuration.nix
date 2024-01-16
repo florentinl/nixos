@@ -5,17 +5,6 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      # Include the base config
-      ./config/base.nix
-      # Include the config for user Florentinl
-      ./users/florentinl.nix
-      # Include the device specific config
-      ./devices/laptop.nix
-    ];
-
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -88,6 +77,18 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  programs.dconf.enable = true;
+  programs.steam.enable = true;
+  programs.zsh.enable = true;
+
+  fonts.packages = with pkgs; [
+    (nerdfonts.override { fonts = [ "CascadiaCode" ]; })
+  ];
+
+  # Required for Systray Icons
+  services.udev.packages = with pkgs; [
+    gnome.gnome-settings-daemon
+  ];
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -102,6 +103,8 @@
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
   ];
+
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];  
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
