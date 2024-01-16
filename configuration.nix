@@ -8,11 +8,18 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      # Include the base config
+      ./config/base.nix
+      # Include the config for user Florentinl
+      ./users/florentinl.nix
+      # Include the device specific config
+      ./devices/laptop.nix
     ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.plymouth.enable = true;
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -49,11 +56,6 @@
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
 
-  # Enable fprintd
-  services.fprintd.enable = true;
-  services.fprintd.tod.enable = true;
-  services.fprintd.tod.driver = pkgs.libfprint-2-tod1-goodix;
-
   # Configure keymap in X11
   services.xserver = {
     layout = "fr";
@@ -86,17 +88,6 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.florentinl = {
-    isNormalUser = true;
-    description = "Florentin Labelle";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      microsoft-edge
-      enpass
-    #  thunderbird
-    ];
-  };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -104,8 +95,10 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    git
     fprintd
+    gnome.adwaita-icon-theme
+    gnomeExtensions.appindicator
+    gnomeExtensions.bing-wallpaper-changer
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
   ];
