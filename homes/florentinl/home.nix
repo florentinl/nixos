@@ -20,9 +20,29 @@
       github.copilot-chat
     ];
   };
+  
+  programs.alacritty = {
+    enable = true;
+    package = pkgs.alacritty;
+    settings = {
+        font = {
+          normal = {
+            family = "CaskaydiaCove Nerd Font";
+            style = "Regular";
+          };
+          bold = {
+            family = "CaskaydiaCove Nerd Font";
+            style = "Bold";
+          };
+        };
+        key_bindings = [
+          # Open a new tab
+          { key = "N"; mods = "Control"; action = "SpawnNewInstance"; }
+        ];
+      };
+  };
 
   home.packages = with pkgs; [
-      alacritty
       microsoft-edge
       enpass
 
@@ -41,6 +61,9 @@
       llvmPackages.libclang
 
       nixd
+      
+     (nerdfonts.override { fonts = [ "CascadiaCode" ]; })
+  
   ];
 
   # This value determines the Home Manager release that your
