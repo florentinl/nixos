@@ -10,15 +10,37 @@
     ./zsh.nix
   ];
 
+  programs.vscode = {
+    enable = true;
+    extensions = with pkgs.vscode-extensions; [
+      rust-lang.rust-analyzer
+      asvetliakov.vscode-neovim
+      github.copilot
+      jnoortheen.nix-ide
+      github.copilot-chat
+    ];
+  };
+
   home.packages = with pkgs; [
       alacritty
-      git
       microsoft-edge
       enpass
-      vscode
+
+      git
       neovim
+
       zsh
       starship
+      xclip
+      xsel
+
+      cargo
+      rustc
+      rustfmt
+      clippy
+      llvmPackages.libclang
+
+      nixd
   ];
 
   # This value determines the Home Manager release that your
