@@ -12,11 +12,14 @@
       nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+          }
           ./hardware-configuration.nix
           ./config/configuration.nix
           ./devices/laptop.nix
-          home-manager.nixosModules.home-manager
-          ./config/home-manager.nix
         ];
       };
     };

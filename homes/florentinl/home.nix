@@ -20,50 +20,77 @@
       github.copilot-chat
     ];
   };
-  
+
   programs.alacritty = {
     enable = true;
     package = pkgs.alacritty;
     settings = {
-        font = {
-          normal = {
-            family = "CaskaydiaCove Nerd Font";
-            style = "Regular";
-          };
-          bold = {
-            family = "CaskaydiaCove Nerd Font";
-            style = "Bold";
-          };
+      font = {
+        normal = {
+          family = "CaskaydiaCove Nerd Font";
+          style = "Regular";
         };
-        key_bindings = [
-          # Open a new tab
-          { key = "N"; mods = "Control"; action = "SpawnNewInstance"; }
-        ];
+        bold = {
+          family = "CaskaydiaCove Nerd Font";
+          style = "Bold";
+        };
       };
+      key_bindings = [
+        # Open a new tab
+        { key = "N"; mods = "Control"; action = "SpawnNewInstance"; }
+      ];
+    };
+  };
+
+  dconf.settings = {
+    "org/gnome/desktop/lockdown" = {
+      disable-lock-screen = false;
+    };
+
+    "org/gnome/shell" = {
+      disable-user-extensions = false;
+      enabled-extensions = [
+        "BingWallpaper@ineffable-gmail.com"
+        "clipboard-history@alexsaveau.dev"
+        "appindicatorsupport@rgcjonas.gmail.com"
+      ];
+    };
+
+    "org/gnome/desktop/wm/keybindings" = {
+      switch-applications = [ "<Super>Tab" ];
+      switch-applications-backward = [ "<Shift><Super>Tab" ];
+      switch-windows = [ "<Alt>Tab" ];
+      switch-windows-backward = [ "<Alt><Control>Tab" ];
+    };
   };
 
   home.packages = with pkgs; [
-      microsoft-edge
-      enpass
+    microsoft-edge
+    enpass
 
-      git
-      neovim
+    git
+    neovim
 
-      zsh
-      starship
-      xclip
-      xsel
+    zsh
+    starship
+    xclip
+    xsel
 
-      cargo
-      rustc
-      rustfmt
-      clippy
-      llvmPackages.libclang
+    cargo
+    rustc
+    rustfmt
+    clippy
+    llvmPackages.libclang
 
-      nixd
-      
-     (nerdfonts.override { fonts = [ "CascadiaCode" ]; })
-  
+    nixd
+    nixpkgs-fmt
+
+    (nerdfonts.override { fonts = [ "CascadiaCode" ]; })
+
+    gnomeExtensions.appindicator
+    gnomeExtensions.bing-wallpaper-changer
+    gnomeExtensions.clipboard-history
+
   ];
 
   # This value determines the Home Manager release that your
