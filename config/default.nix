@@ -13,13 +13,22 @@
     ./nix.nix
   ];
 
+  # Enable Home-Manager
+  environment.systemPackages = with pkgs; [
+    home-manager
+  ];
+
 
   # Enable networking
   networking.networkmanager.enable = true;
-  networking.hostName = "nixos";
+  networking.hostName = "flaptop";
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+
+  # Keep the system updated
+  services.fwupd.enable = true;
+  system.autoUpgrade.enable = true;
 
   programs.steam.enable = true;
   programs.zsh.enable = true;

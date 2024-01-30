@@ -1,12 +1,6 @@
 { config, pkgs, ... }:
 
 {
-
-  # Enable fprintd
-  services.fprintd.enable = true;
-  services.fprintd.tod.enable = true;
-  services.fprintd.tod.driver = pkgs.libfprint-2-tod1-goodix;
-
   # Configure Laptop Users
   users.users.florentinl = {
     isNormalUser = true;
@@ -15,10 +9,12 @@
     shell = pkgs.zsh;
   };
 
-  # Configure Home Manager Homes
-  home-manager.users.florentinl = import ../homes/florentinl/home.nix;
+  # Configure Finger Print Reader
+  services.fprintd.enable = true;
+  services.fprintd.tod.enable = true;
+  services.fprintd.tod.driver = pkgs.libfprint-2-tod1-goodix;
 
-  # Configure Nvidia graphic card
+  # Configure Nvidia Graphic Card
   hardware.opengl = {
     enable = true;
     driSupport = true;
@@ -26,7 +22,6 @@
   };
 
   hardware.nvidia = {
-
     # Modesetting is required.
     modesetting.enable = true;
 
