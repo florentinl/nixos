@@ -12,7 +12,6 @@
         modules = [
           ./config # Generic NixOS configuration
           ./devices/flaptop.nix # Device-specific configuration
-          ./hardware-configuration.nix # Auto-generated hardware configuration
         ];
       };
     };
