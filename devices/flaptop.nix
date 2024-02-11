@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   # Configure Laptop Users
@@ -12,32 +12,53 @@
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
 
-  # Enable Steam
-  # programs.steam.enable = false;
-
   # Configure for intel CPU
   nixpkgs.hostPlatform = "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
   boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelParams = [ "i915.force_probe=46a6" "mem_sleep_default=deep" ];
 
   # Enable kernel modules for peripherics
   boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "vmd" "nvme" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
+  # Configure suspend-then-hibernate
+  systemd.sleep.extraConfig = ''
+    HibernateDelaySec=30m
+    SuspendState=mem
+    AllowSuspendThenHibernate=yes
+  '';
+
+  services.logind = {
+    suspendKey = "suspend-then-hibernate";
+    lidSwitch = "suspend-then-hibernate";
+    lidSwitchDocked = "suspend-then-hibernate";
+  };
+
   # Configure File Systems
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/57b0e502-6b16-4b4f-a288-4ea7a9ce6261";
-    fsType = "ext4";
-  };
+  fileSystems."/" =
+    {
+      device = "/dev/disk/by-uuid/727eaf35-7cd6-44b3-8820-78dacbe01c01";
+      fsType = "ext4";
+    };
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/5404-64F0";
-    fsType = "vfat";
-  };
+  boot.initrd.luks.devices."luks-ac7b7b3d-1c0c-4dbb-81a2-576ba886b1f0".device = "/dev/disk/by-uuid/ac7b7b3d-1c0c-4dbb-81a2-576ba886b1f0";
 
-  swapDevices = [ ];
+  fileSystems."/boot" =
+    {
+      device = "/dev/disk/by-uuid/2530-D7D5";
+      fsType = "vfat";
+    };
+
+  swapDevices = lib.mkForce
+    [
+      { device = "/dev/mapper/luks-b63628b5-e216-43a4-8758-9ef72942d4c1"; }
+    ];
+
+  boot.initrd.luks.devices."luks-b63628b5-e216-43a4-8758-9ef72942d4c1".device = "/dev/disk/by-uuid/b63628b5-e216-43a4-8758-9ef72942d4c1";
+  boot.resumeDevice = "/dev/mapper/luks-b63628b5-e216-43a4-8758-9ef72942d4c1";
 
   # Configure Finger Print Reader
   services.fprintd.enable = true;
@@ -74,9 +95,9 @@
 
     # Use the NVidia open source kernel module (not to be confused with the
     # independent third-party "nouveau" open source driver).
-    # Support is limited to the Turing and later architectures. Full list of 
-    # supported GPUs is at: 
-    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus 
+    # Support is limited to the Turing and later architectures. Full list of
+    # supported GPUs is at:
+    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
     # Only available from driver 515.43.04+
     # Currently alpha-quality/buggy, so false is currently the recommended setting.
     open = false;

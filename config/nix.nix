@@ -7,6 +7,10 @@
   # Enable experimental features
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
+  # Disable the NixOS Manual
+  documentation.nixos.enable = false;
+
+  # Automatically perform garbage collection
   nix.gc = {
     automatic = true;
     dates = "weekly";

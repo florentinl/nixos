@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, pkgs-unstable, lib, ... }:
 
 {
   # Configure booting.
@@ -7,17 +7,26 @@
     kernelPackages = pkgs.linuxPackages_latest;
 
     loader = {
+      # Hide the systemd-boot menu by default.
       timeout = 0;
-      systemd-boot.editor = false;
       # Use the systemd-boot EFI boot loader.
-      systemd-boot.enable = true;
+      systemd-boot.enable = lib.mkForce false;
       efi.canTouchEfiVariables = true;
     };
 
     # Silent Boot
     plymouth.enable = true;
 
-    # https://wiki.archlinux.org/title/Silent_boot
+    # Secure Boot
+    lanzaboote = {
+      enable = true;
+      pkiBundle = "/etc/secureboot";
+    };
+
+    # Required for TPM2 support to decrypt the root partition
+    initrd.systemd.enable = true;
+
+    # Configure Silent Boot https://wiki.archlinux.org/title/Silent_boot
     kernelParams = [
       "quiet"
       "splash"
@@ -29,4 +38,9 @@
     consoleLogLevel = 0;
     initrd.verbose = false;
   };
+
+  environment.systemPackages = [
+    pkgs-unstable.sbctl
+    pkgs-unstable.tpm2-tss
+  ];
 }
