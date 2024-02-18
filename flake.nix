@@ -10,22 +10,26 @@
     };
   };
 
-  outputs = inputs@{ nixpkgs, lanzaboote, nixpkgs-unstable, ... }: {
-    nixosConfigurations =
-      let
-        system = "x86_64-linux";
-        pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
-      in
-      {
-        flaptop = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit pkgs-unstable; };
-          system = system;
-          modules = [
-            lanzaboote.nixosModules.lanzaboote
-            ./config # Generic NixOS configuration
-            ./devices/flaptop.nix # Device-specific configuration
-          ];
+  outputs = inputs@{ nixpkgs, lanzaboote, nixpkgs-unstable, ... }:
+    let
+      makeConfiguration = { hostname, platform }:
+        let
+          pkgs-unstable = nixpkgs-unstable.legacyPackages.${platform};
+        in
+        {
+          "${hostname}" = nixpkgs.lib.nixosSystem {
+            specialArgs = { inherit pkgs-unstable; inherit hostname; };
+            system = platform;
+            modules = [
+              lanzaboote.nixosModules.lanzaboote
+              ./config # Generic NixOS configuration
+              ./devices/${hostname}.nix # Device-specific configuration
+            ];
+          };
         };
-      };
-  };
+    in
+    {
+      nixosConfigurations =
+        makeConfiguration { hostname = "flaptop"; platform = "x86_64-linux"; };
+    };
 }

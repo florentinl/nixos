@@ -2,16 +2,30 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, hostname, ... }:
 
 {
   imports = [
     ./boot.nix
     ./gnome.nix
     ./locals.nix
-    ./pipewire.nix
     ./nix.nix
+    ./pipewire.nix
+    ./user.nix
   ];
+
+  # Configure suspend-then-hibernate
+  systemd.sleep.extraConfig = ''
+    HibernateDelaySec=30m
+    SuspendState=mem
+    AllowSuspendThenHibernate=yes
+  '';
+
+  services.logind = {
+    suspendKey = "suspend-then-hibernate";
+    lidSwitch = "suspend-then-hibernate";
+    lidSwitchDocked = "suspend-then-hibernate";
+  };
 
   # Enable Home-Manager
   environment.systemPackages = with pkgs; [
@@ -20,11 +34,11 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
-  networking.hostName = "flaptop";
+  networking.hostName = hostname;
   networking.useDHCP = lib.mkDefault true;
-  
-  # Enable Tailscale, but without auto-starting
-  services.tailscale.enable = true;
+
+  # Enable OpenGL acceleration
+  hardware.opengl.enable = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;

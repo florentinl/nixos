@@ -6,25 +6,19 @@
     # Stay up-to-date on the kernel.
     kernelPackages = pkgs.linuxPackages_latest;
 
+
+    # Configure the EFI boot loader.
     loader = {
-      # Hide the systemd-boot menu by default.
+      # Hide the systemd-boot menu by default. Pressing any key will show it.
       timeout = 0;
-      # Use the systemd-boot EFI boot loader.
+      # Lanzaboote overrides the default systemd-boot configuration
       systemd-boot.enable = lib.mkForce false;
       efi.canTouchEfiVariables = true;
     };
+    initrd.systemd.enable = true;
 
     # Silent Boot
     plymouth.enable = true;
-
-    # Secure Boot
-    lanzaboote = {
-      enable = true;
-      pkiBundle = "/etc/secureboot";
-    };
-
-    # Required for TPM2 support to decrypt the root partition
-    initrd.systemd.enable = true;
 
     # Configure Silent Boot https://wiki.archlinux.org/title/Silent_boot
     kernelParams = [
@@ -39,6 +33,11 @@
     initrd.verbose = false;
   };
 
+  # Secure Boot
+  boot.lanzaboote = {
+    enable = true;
+    pkiBundle = "/etc/secureboot";
+  };
   environment.systemPackages = [
     pkgs-unstable.sbctl
     pkgs-unstable.tpm2-tss

@@ -1,19 +1,18 @@
 { config, pkgs, lib, ... }:
 
 {
-  # Configure Laptop Users
-  users.users.florentinl = {
-    isNormalUser = true;
-    description = "Florentin Labelle";
-    extraGroups = [ "networkmanager" "wheel" ];
-  };
+  ###################################
+  # Enable device specific services #
+  ###################################
 
-  # Set default shell to zsh
-  programs.zsh.enable = true;
-  users.defaultUserShell = pkgs.zsh;
-
-  # Enable Virtualbox
+  # Enable VirtualBox
   virtualisation.virtualbox.host.enable = true;
+  # Enable Tailscale
+  services.tailscale.enable = true;
+
+  ####################################################
+  # Configure Hardware specificities for this Laptop #
+  ####################################################
 
   # Configure for intel CPU
   nixpkgs.hostPlatform = "x86_64-linux";
@@ -27,18 +26,6 @@
   boot.initrd.kernelModules = [ "i915" ];
   boot.extraModulePackages = [ ];
 
-  # Configure suspend-then-hibernate
-  systemd.sleep.extraConfig = ''
-    HibernateDelaySec=30m
-    SuspendState=mem
-    AllowSuspendThenHibernate=yes
-  '';
-
-  services.logind = {
-    suspendKey = "suspend-then-hibernate";
-    lidSwitch = "suspend-then-hibernate";
-    lidSwitchDocked = "suspend-then-hibernate";
-  };
 
   # Configure File Systems
   fileSystems."/" =
@@ -69,14 +56,12 @@
   services.fprintd.tod.driver = pkgs.libfprint-2-tod1-goodix;
 
   # Configure integrated GPU
-  hardware.opengl.enable = true;
-
   environment.variables = {
     VDPAU_DRIVER = (lib.mkDefault "va_gl");
   };
 
   hardware.opengl.extraPackages = with pkgs; [
-    (if (lib.versionOlder (lib.versions.majorMinor lib.version) "23.11") then vaapiIntel else intel-vaapi-driver)
+    intel-vaapi-driver
     libvdpau-va-gl
     intel-media-driver
   ];
