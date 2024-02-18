@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, hostname, ... }:
+{ config, pkgs, lib, hostname, user, ... }:
 
 {
   imports = [
@@ -11,8 +11,10 @@
     ./locals.nix
     ./nix.nix
     ./pipewire.nix
-    ./user.nix
   ];
+
+  # Set user
+  users.users.user = user;
 
   # Configure suspend-then-hibernate
   systemd.sleep.extraConfig = ''
@@ -26,6 +28,10 @@
     lidSwitch = "suspend-then-hibernate";
     lidSwitchDocked = "suspend-then-hibernate";
   };
+
+  # Set default shell to zsh
+  programs.zsh.enable = true;
+  users.defaultUserShell = pkgs.zsh;
 
   # Enable Home-Manager
   environment.systemPackages = with pkgs; [

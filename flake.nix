@@ -12,13 +12,13 @@
 
   outputs = inputs@{ nixpkgs, lanzaboote, nixpkgs-unstable, ... }:
     let
-      makeConfiguration = { hostname, platform }:
+      makeConfiguration = { hostname, platform, user }:
         let
           pkgs-unstable = nixpkgs-unstable.legacyPackages.${platform};
         in
         {
           "${hostname}" = nixpkgs.lib.nixosSystem {
-            specialArgs = { inherit pkgs-unstable; inherit hostname; };
+            specialArgs = { inherit pkgs-unstable; inherit hostname; inherit user; };
             system = platform;
             modules = [
               lanzaboote.nixosModules.lanzaboote
@@ -27,9 +27,15 @@
             ];
           };
         };
+      user = {
+        name = "florentinl";
+        isNormalUser = true;
+        description = "Florentin Labelle";
+        extraGroups = [ "networkmanager" "wheel" ];
+      };
     in
     {
       nixosConfigurations =
-        makeConfiguration { hostname = "flaptop"; platform = "x86_64-linux"; };
+        makeConfiguration { hostname = "flaptop"; platform = "x86_64-linux"; user = user; };
     };
 }

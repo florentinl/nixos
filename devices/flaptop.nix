@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, user, ... }:
 
 {
   ###################################
@@ -7,6 +7,9 @@
 
   # Enable VirtualBox
   virtualisation.virtualbox.host.enable = true;
+  # Enable Docker
+  virtualisation.docker.enable = true;
+  users.extraGroups.docker.members = [ user.name ];
   # Enable Tailscale
   services.tailscale.enable = true;
 
