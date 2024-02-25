@@ -18,6 +18,7 @@
   environment.gnome.excludePackages = with pkgs; [
     gnome-tour
     gnome.yelp
+    epiphany
   ];
 
   # Required for Systray Icons
