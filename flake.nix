@@ -2,23 +2,19 @@
   description = "System Flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     lanzaboote = {
-      url = "github:nix-community/lanzaboote/v0.3.0";
+      url = "github:nix-community/lanzaboote";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = inputs@{ nixpkgs, lanzaboote, nixpkgs-unstable, ... }:
+  outputs = inputs@{ nixpkgs, lanzaboote, ... }:
     let
       makeConfiguration = { hostname, platform, user }:
-        let
-          pkgs-unstable = nixpkgs-unstable.legacyPackages.${platform};
-        in
         {
           "${hostname}" = nixpkgs.lib.nixosSystem {
-            specialArgs = { inherit pkgs-unstable; inherit hostname; inherit user; };
+            specialArgs = { inherit hostname; inherit user; };
             system = platform;
             modules = [
               lanzaboote.nixosModules.lanzaboote

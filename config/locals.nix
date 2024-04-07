@@ -21,9 +21,9 @@
 
 
   # Configure keymap in X11
-  services.xserver = {
+  services.xserver.xkb = {
     layout = "fr";
-    xkbVariant = "afnor";
+    variant = "afnor";
   };
 
   # Configure console keymap

@@ -39,7 +39,7 @@
     pkiBundle = "/etc/secureboot";
   };
   environment.systemPackages = [
-    pkgs-unstable.sbctl
-    pkgs-unstable.tpm2-tss
+    pkgs.sbctl
+    pkgs.tpm2-tss
   ];
 }
