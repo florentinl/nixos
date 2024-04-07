@@ -36,6 +36,7 @@
   # Enable Home-Manager
   environment.systemPackages = with pkgs; [
     home-manager
+    # microsoft-edge
   ];
 
   # Enable networking
