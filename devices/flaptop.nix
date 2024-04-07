@@ -15,7 +15,7 @@
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   # Let's go wayland ozone on this one
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  # environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   ####################################################
   # Configure Hardware specificities for this Laptop #

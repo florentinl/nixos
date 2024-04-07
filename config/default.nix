@@ -7,7 +7,8 @@
 {
   imports = [
     ./boot.nix
-    ./gnome.nix
+    # ./gnome.nix
+    ./hyprland.nix
     ./locals.nix
     ./nix.nix
     ./pipewire.nix
