@@ -8,6 +8,13 @@
     # Stay up-to-date on the kernel.
     kernelPackages = pkgs.linuxPackages_latest;
 
+    # Required for Docker
+    kernel.sysctl = {
+      "net.bridge.bridge-nf-call-iptables" = 1;
+      "net.bridge.bridge-nf-call-ip6tables" = 1;
+      "net.ipv4.ip_forward" = 1;
+    };
+
     # Configure the EFI boot loader.
     loader = {
       # Hide the systemd-boot menu by default. Pressing any key will show it.
