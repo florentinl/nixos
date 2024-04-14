@@ -9,30 +9,48 @@
     };
   };
 
-  outputs = inputs@{ nixpkgs, lanzaboote, ... }:
-    let
-      makeConfiguration = { hostname, platform, user }:
-        {
-          "${hostname}" = nixpkgs.lib.nixosSystem {
-            specialArgs = { inherit hostname; inherit user; };
-            system = platform;
-            modules = [
-              lanzaboote.nixosModules.lanzaboote
-              ./config # Generic NixOS configuration
-              ./devices/${hostname}.nix # Device-specific configuration
-            ];
-          };
+  outputs = {
+    nixpkgs,
+    lanzaboote,
+    ...
+  }: let
+    makeConfiguration = {
+      hostname,
+      platform,
+      user,
+    }: {
+      "${hostname}" = nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          inherit hostname;
+          inherit user;
         };
-      user = {
-        name = "florentinl";
-        isNormalUser = true;
-        description = "Florentin Labelle";
-        extraGroups = [ "networkmanager" "wheel" ];
+        system = platform;
+        modules = [
+          lanzaboote.nixosModules.lanzaboote
+          ./config # Generic NixOS configuration
+          ./devices/${hostname}.nix # Device-specific configuration
+        ];
       };
-    in
-    {
-      nixosConfigurations =
-        makeConfiguration { hostname = "flaptop"; platform = "x86_64-linux"; user = user; } //
-        makeConfiguration { hostname = "bsport"; platform = "x86_64-linux"; user = user; };
     };
+    user = {
+      name = "florentinl";
+      isNormalUser = true;
+      description = "Florentin Labelle";
+      extraGroups = ["networkmanager" "wheel"];
+    };
+  in {
+    formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
+    formatter.aarch64-linux = nixpkgs.legacyPackages.aarch64-linux.alejandra;
+    nixosConfigurations =
+      makeConfiguration {
+        hostname = "flaptop";
+        platform = "x86_64-linux";
+        user = user;
+      }
+      // makeConfiguration {
+        hostname = "bsport";
+        platform = "x86_64-linux";
+        user = user;
+      };
+  };
 }

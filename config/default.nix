@@ -1,14 +1,16 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, lib, hostname, user, ... }:
-
 {
+  pkgs,
+  lib,
+  hostname,
+  user,
+  ...
+}: {
   imports = [
     ./boot.nix
-    # ./gnome.nix
-    ./hyprland.nix
+    ./gnome.nix
     ./locals.nix
     ./nix.nix
     ./pipewire.nix
@@ -37,7 +39,6 @@
   # Enable Home-Manager
   environment.systemPackages = with pkgs; [
     home-manager
-    # microsoft-edge
   ];
 
   # Enable networking
@@ -46,12 +47,12 @@
   networking.useDHCP = lib.mkDefault true;
 
   # Enable OpenGL acceleration
-  hardware.opengl.enable = true;
+  hardware.opengl = {
+    enable = true;
+    driSupport = true;
+    driSupport32Bit = true;
+  };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
-
-  # Keep the system updated
-  services.fwupd.enable = true;
-  system.autoUpgrade.enable = true;
 }

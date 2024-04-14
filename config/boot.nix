@@ -1,11 +1,12 @@
-{ pkgs, pkgs-unstable, lib, ... }:
-
 {
+  pkgs,
+  lib,
+  ...
+}: {
   # Configure booting.
   boot = {
     # Stay up-to-date on the kernel.
     kernelPackages = pkgs.linuxPackages_latest;
-
 
     # Configure the EFI boot loader.
     loader = {

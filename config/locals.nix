@@ -1,6 +1,4 @@
-{ ... }:
-
-{
+{...}: {
   # Set your time zone.
   time.timeZone = "Europe/Paris";
 
@@ -18,7 +16,6 @@
     LC_TELEPHONE = "fr_FR.UTF-8";
     LC_TIME = "fr_FR.UTF-8";
   };
-
 
   # Configure keymap in X11
   services.xserver.xkb = {
