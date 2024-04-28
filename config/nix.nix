@@ -9,7 +9,7 @@
   documentation.nixos.enable = false;
 
   # Enable envfs and nix-ld for fhs compatibility
-  # services.envfs.enable = true;
+  services.envfs.enable = true;
   programs.nix-ld = {
     enable = true;
     package = pkgs.nix-ld-rs;

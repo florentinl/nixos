@@ -1,16 +1,17 @@
 {
   pkgs,
   lib,
-  user,
   ...
 }: {
   ###################################
   # Enable device specific services #
   ###################################
 
-  # Enable Docker
-  virtualisation.docker.enable = true;
-  users.extraGroups.docker.members = [user.name];
+  networking.extraHosts = ''
+    127.0.0.1 b-319e027b-0316-4169-a48a-cf1f0a2d07e6.mq.eu-west-3.amazonaws.com
+    127.0.0.1 b-769ce1b9-0f55-417d-849e-1ce950554971.mq.eu-west-3.amazonaws.com
+    127.0.0.1 b-feffbe8d-3d27-42b3-a03e-11f2a9c8db9b.mq.eu-west-3.amazonaws.com
+  '';
 
   ####################################################
   # Configure Hardware specificities for this Laptop #
@@ -49,9 +50,9 @@
   boot.resumeDevice = "/dev/disk/by-uuid/9f767868-9bb7-4d02-bee3-64e5911bf9cc";
 
   # Configure Finger Print Reader
-  services.fprintd.enable = true;
-  #services.fprintd.tod.enable = true;
-  #services.fprintd.tod.driver = pkgs.libfprint-2-tod1-goodix;
+  # services.fprintd.enable = true;
+  # services.fprintd.tod.enable = true;
+  # services.fprintd.tod.driver = pkgs.libfprint-2-tod1-goodix;
 
   # Configure integrated GPU
   environment.variables = {
