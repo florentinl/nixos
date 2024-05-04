@@ -7,6 +7,8 @@
   # Enable device specific services #
   ###################################
 
+  programs.nix-ld.enable = true;
+
   networking.extraHosts = ''
     127.0.0.1 b-319e027b-0316-4169-a48a-cf1f0a2d07e6.mq.eu-west-3.amazonaws.com
     127.0.0.1 b-769ce1b9-0f55-417d-849e-1ce950554971.mq.eu-west-3.amazonaws.com

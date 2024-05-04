@@ -35,6 +35,9 @@ in {
   # Enable device specific services #
   ###################################
 
+  # Enable steam
+  programs.steam.enable = true;
+
   # Enable binfmt for aarch64
   environment.systemPackages = [
     qemu-static
@@ -49,9 +52,6 @@ in {
     wrapInterpreterInShell = false;
   };
 
-  # Let's go wayland ozone on this one
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
-
   ####################################################
   # Configure Hardware specificities for this Laptop #
   ####################################################
@@ -60,13 +60,11 @@ in {
   nixpkgs.hostPlatform = "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
-  boot.kernelModules = ["kvm-intel" "overlay" "br_netfilter"];
+  boot.kernelModules = ["kvm-intel" "overlay" "br_netfilter" "i915"];
   boot.kernelParams = ["mem_sleep_default=deep"];
 
   # Enable kernel modules for peripherics
   boot.initrd.availableKernelModules = ["xhci_pci" "thunderbolt" "vmd" "nvme" "usb_storage" "sd_mod"];
-  boot.initrd.kernelModules = ["i915"];
-  boot.extraModulePackages = [];
 
   # Configure File Systems
   fileSystems."/" = {
@@ -95,11 +93,6 @@ in {
   services.fprintd.tod.enable = true;
   services.fprintd.tod.driver = pkgs.libfprint-2-tod1-goodix;
 
-  # Configure integrated GPU
-  environment.variables = {
-    VDPAU_DRIVER = lib.mkDefault "va_gl";
-  };
-
   hardware.opengl.extraPackages = with pkgs; [
     intel-vaapi-driver
     libvdpau-va-gl
@@ -108,17 +101,11 @@ in {
 
   hardware.nvidia = {
     modesetting.enable = true;
-    powerManagement.enable = true;
-    powerManagement.finegrained = true;
-    open = true;
-    nvidiaSettings = false;
     prime = {
       intelBusId = "PCI:0:2:0";
       nvidiaBusId = "PCI:1:0:0";
-      offload = {
-        enable = true;
-        enableOffloadCmd = true;
-      };
+      offload.enable = true;
+      offload.enableOffloadCmd = true;
     };
   };
 

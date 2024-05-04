@@ -18,7 +18,7 @@
 
   # Set user
   users.users.user = user;
-  systemd.services."user@".serviceConfig.Delegate = "memory pids cpu cpuset";
+  systemd.services."user@".serviceConfig.Delegate = "memory pids cpu cpuset io";
 
   # Configure suspend-then-hibernate
   systemd.sleep.extraConfig = ''
@@ -36,6 +36,9 @@
   # Set default shell to zsh
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
+
+  # Disable Nano editor
+  programs.nano.enable = false;
 
   # Enable Home-Manager
   environment.systemPackages = with pkgs; [

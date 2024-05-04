@@ -11,7 +11,6 @@
   # Enable envfs and nix-ld for fhs compatibility
   services.envfs.enable = true;
   programs.nix-ld = {
-    enable = true;
     package = pkgs.nix-ld-rs;
     libraries = with pkgs; [
       alsa-lib
