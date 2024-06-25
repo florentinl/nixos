@@ -50,11 +50,10 @@
   networking.hostName = hostname;
   networking.useDHCP = lib.mkDefault true;
 
-  # Enable OpenGL acceleration
-  hardware.opengl = {
+  # Enable Hardware acceleration
+  hardware.graphics = {
     enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
+    enable32Bit = true;
   };
 
   # Enable CUPS to print documents.
