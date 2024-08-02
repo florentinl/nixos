@@ -46,11 +46,6 @@
         hostname = "flaptop";
         platform = "x86_64-linux";
         user = user;
-      }
-      // makeConfiguration {
-        hostname = "bsport";
-        platform = "x86_64-linux";
-        user = user;
       };
   };
 }
