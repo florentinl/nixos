@@ -13,7 +13,7 @@
   # Exclude a few gnome packages
   environment.gnome.excludePackages = with pkgs; [
     gnome-tour
-    gnome.yelp
+    yelp
     epiphany
   ];
 
@@ -24,7 +24,7 @@
 
   # Adwaita Icon Theme
   environment.systemPackages = with pkgs; [
-    gnome.adwaita-icon-theme
+    adwaita-icon-theme
   ];
 
   programs.dconf.enable = true;

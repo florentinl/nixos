@@ -61,6 +61,7 @@
   services.fprintd.tod.enable = true;
   services.fprintd.tod.driver = pkgs.libfprint-2-tod1-goodix;
 
+  # Configure Graphics Card
   hardware.graphics.extraPackages = with pkgs; [
     intel-vaapi-driver
     libvdpau-va-gl
