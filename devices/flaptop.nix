@@ -20,6 +20,9 @@
     };
   };
 
+  # Enable xpadneo
+  hardware.xpadneo.enable = true;
+
   ####################################################
   # Configure Hardware specificities for this Laptop #
   ####################################################
