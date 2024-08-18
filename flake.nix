@@ -28,10 +28,11 @@
         modules = [
           lanzaboote.nixosModules.lanzaboote
           ./config # Generic NixOS configuration
-          ./devices/${hostname}.nix # Device-specific configuration
+          ./devices/${hostname} # Device-specific configuration
         ];
       };
     };
+
     user = {
       name = "florentinl";
       isNormalUser = true;
@@ -41,11 +42,10 @@
   in {
     formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
     formatter.aarch64-linux = nixpkgs.legacyPackages.aarch64-linux.alejandra;
-    nixosConfigurations =
-      makeConfiguration {
-        hostname = "flaptop";
-        platform = "x86_64-linux";
-        user = user;
-      };
+    nixosConfigurations = makeConfiguration {
+      hostname = "flaptop";
+      platform = "x86_64-linux";
+      user = user;
+    };
   };
 }

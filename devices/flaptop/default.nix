@@ -11,6 +11,7 @@
   programs.steam = {
     enable = true;
     package = pkgs.steam.override {
+      # Enable NVidia Offloading for steam games
       extraEnv = {
         __NV_PRIME_RENDER_OFFLOAD = "1";
         __NV_PRIME_RENDER_OFFLOAD_PROVIDER = "NVIDIA-G0";
