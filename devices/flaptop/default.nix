@@ -32,11 +32,23 @@
   nixpkgs.hostPlatform = "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
-  boot.kernelModules = ["kvm-intel" "overlay" "br_netfilter" "i915"];
+  boot.kernelModules = [
+    "kvm-intel"
+    "overlay"
+    "br_netfilter"
+    "i915"
+  ];
   boot.kernelParams = ["mem_sleep_default=deep"];
 
   # Enable kernel modules for peripherics
-  boot.initrd.availableKernelModules = ["xhci_pci" "thunderbolt" "vmd" "nvme" "usb_storage" "sd_mod"];
+  boot.initrd.availableKernelModules = [
+    "xhci_pci"
+    "thunderbolt"
+    "vmd"
+    "nvme"
+    "usb_storage"
+    "sd_mod"
+  ];
 
   # Configure File Systems
   fileSystems."/" = {
@@ -51,11 +63,7 @@
     fsType = "vfat";
   };
 
-  swapDevices =
-    lib.mkForce
-    [
-      {device = "/dev/mapper/luks-b63628b5-e216-43a4-8758-9ef72942d4c1";}
-    ];
+  swapDevices = lib.mkForce [{device = "/dev/mapper/luks-b63628b5-e216-43a4-8758-9ef72942d4c1";}];
 
   boot.initrd.luks.devices."luks-b63628b5-e216-43a4-8758-9ef72942d4c1".device = "/dev/disk/by-uuid/b63628b5-e216-43a4-8758-9ef72942d4c1";
   boot.resumeDevice = "/dev/mapper/luks-b63628b5-e216-43a4-8758-9ef72942d4c1";
@@ -84,4 +92,7 @@
 
   # Load nvidia driver for Xorg and Wayland
   services.xserver.videoDrivers = ["nvidia"];
+
+  # Enable fwupd for firmware updates
+  services.fwupd.enable = true;
 }

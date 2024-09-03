@@ -18,14 +18,16 @@
   ];
 
   # Required for Systray Icons
-  services.udev.packages = with pkgs; [
-    gnome.gnome-settings-daemon
-  ];
+  services.udev.packages = with pkgs; [gnome.gnome-settings-daemon];
+
+  # Required for GSConnect support
+  programs.kdeconnect = {
+    enable = true;
+    package = pkgs.gnomeExtensions.gsconnect;
+  };
 
   # Adwaita Icon Theme
-  environment.systemPackages = with pkgs; [
-    adwaita-icon-theme
-  ];
+  environment.systemPackages = with pkgs; [adwaita-icon-theme];
 
   programs.dconf.enable = true;
 }
