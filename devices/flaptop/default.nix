@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  user,
   ...
 }: {
   ###################################
@@ -23,6 +24,11 @@
 
   # Enable xpadneo
   hardware.xpadneo.enable = true;
+
+  # Enable VirtualBox
+  virtualisation.virtualbox.host.enable = true;
+  virtualisation.virtualbox.host.enableExtensionPack = true;
+  users.extraGroups.vboxusers.members = [user.name];
 
   ####################################################
   # Configure Hardware specificities for this Laptop #
@@ -81,6 +87,7 @@
   ];
 
   hardware.nvidia = {
+    open = false;
     modesetting.enable = true;
     prime = {
       intelBusId = "PCI:0:2:0";
