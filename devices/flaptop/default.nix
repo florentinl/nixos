@@ -3,7 +3,8 @@
   lib,
   user,
   ...
-}: {
+}:
+{
   ###################################
   # Enable device specific services #
   ###################################
@@ -28,7 +29,7 @@
   # Enable VirtualBox
   virtualisation.virtualbox.host.enable = true;
   virtualisation.virtualbox.host.enableExtensionPack = true;
-  users.extraGroups.vboxusers.members = [user.name];
+  users.extraGroups.vboxusers.members = [ user.name ];
 
   ####################################################
   # Configure Hardware specificities for this Laptop #
@@ -44,7 +45,6 @@
     "br_netfilter"
     "i915"
   ];
-  boot.kernelParams = ["mem_sleep_default=deep"];
 
   # Enable kernel modules for peripherics
   boot.initrd.availableKernelModules = [
@@ -69,7 +69,7 @@
     fsType = "vfat";
   };
 
-  swapDevices = lib.mkForce [{device = "/dev/mapper/luks-b63628b5-e216-43a4-8758-9ef72942d4c1";}];
+  swapDevices = lib.mkForce [ { device = "/dev/mapper/luks-b63628b5-e216-43a4-8758-9ef72942d4c1"; } ];
 
   boot.initrd.luks.devices."luks-b63628b5-e216-43a4-8758-9ef72942d4c1".device = "/dev/disk/by-uuid/b63628b5-e216-43a4-8758-9ef72942d4c1";
   boot.resumeDevice = "/dev/mapper/luks-b63628b5-e216-43a4-8758-9ef72942d4c1";
@@ -88,17 +88,23 @@
 
   hardware.nvidia = {
     open = false;
+    powerManagement = {
+      enable = true;
+      finegrained = true;
+    };
     modesetting.enable = true;
     prime = {
       intelBusId = "PCI:0:2:0";
       nvidiaBusId = "PCI:1:0:0";
-      offload.enable = true;
-      offload.enableOffloadCmd = true;
+      offload = {
+        enable = true;
+        enableOffloadCmd = true;
+      };
     };
   };
 
   # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   # Enable fwupd for firmware updates
   services.fwupd.enable = true;

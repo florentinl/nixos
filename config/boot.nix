@@ -2,7 +2,8 @@
   pkgs,
   lib,
   ...
-}: {
+}:
+{
   # Configure booting.
   boot = {
     # Stay up-to-date on the kernel.

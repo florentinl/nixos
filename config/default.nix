@@ -7,7 +7,8 @@
   hostname,
   user,
   ...
-}: {
+}:
+{
   imports = [
     ./boot.nix
     ./gnome.nix
@@ -19,19 +20,6 @@
   # Set user
   users.users.user = user;
   systemd.services."user@".serviceConfig.Delegate = "memory pids cpu cpuset io";
-
-  # Configure suspend-then-hibernate
-  systemd.sleep.extraConfig = ''
-    HibernateDelaySec=30m
-    SuspendState=mem
-    AllowSuspendThenHibernate=yes
-  '';
-
-  services.logind = {
-    suspendKey = "suspend-then-hibernate";
-    lidSwitch = "suspend-then-hibernate";
-    lidSwitchDocked = "suspend-then-hibernate";
-  };
 
   # Set default shell to zsh
   programs.zsh.enable = true;

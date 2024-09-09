@@ -1,9 +1,13 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
   # Enable experimental features
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # Disable the NixOS Manual
   documentation.nixos.enable = false;

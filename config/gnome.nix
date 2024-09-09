@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.xserver.excludePackages = with pkgs; [
@@ -18,7 +19,7 @@
   ];
 
   # Required for Systray Icons
-  services.udev.packages = with pkgs; [gnome.gnome-settings-daemon];
+  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
 
   # Required for GSConnect support
   programs.kdeconnect = {
@@ -27,7 +28,7 @@
   };
 
   # Adwaita Icon Theme
-  environment.systemPackages = with pkgs; [adwaita-icon-theme];
+  environment.systemPackages = with pkgs; [ adwaita-icon-theme ];
 
   programs.dconf.enable = true;
 }
