@@ -14,7 +14,6 @@
     ./gnome.nix
     ./locals.nix
     ./nix.nix
-    ./pipewire.nix
   ];
 
   # Set user
