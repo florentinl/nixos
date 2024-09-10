@@ -31,12 +31,9 @@
 
     # Configure Silent Boot https://wiki.archlinux.org/title/Silent_boot
     kernelParams = [
+      "i915.fastboot=1"
       "quiet"
       "splash"
-      "vga=current"
-      "rd.systemd.show_status=false"
-      "rd.udev.log_level=3"
-      "udev.log_priority=3"
     ];
     consoleLogLevel = 0;
     initrd.verbose = false;
