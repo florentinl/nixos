@@ -29,8 +29,9 @@
     # Silent Boot
     plymouth.enable = true;
 
-    # Configure Silent Boot https://wiki.archlinux.org/title/Silent_boot
+    # Configure Silent Boot on Intel Graphics with Nvidia dGPU
     kernelParams = [
+      "nvidia-drm.modeset=0"
       "i915.fastboot=1"
       "quiet"
       "splash"
