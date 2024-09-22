@@ -9,6 +9,12 @@
   # Enable device specific services #
   ###################################
 
+  # Enable other architectures for emulation
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+
+  # Enable tailscale
+  services.tailscale.enable = true;
+
   # Enable steam
   programs.steam = {
     enable = true;
