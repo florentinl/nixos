@@ -29,10 +29,8 @@
     # Silent Boot
     plymouth.enable = true;
 
-    # Configure Silent Boot on Intel Graphics with Nvidia dGPU
+    # Configure Silent Boot
     kernelParams = [
-      "nvidia-drm.modeset=0"
-      "i915.fastboot=1"
       "quiet"
       "splash"
     ];

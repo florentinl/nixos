@@ -2,12 +2,16 @@
   pkgs,
   lib,
   user,
+  hardwareModules,
   ...
 }:
 {
   ###################################
   # Enable device specific services #
   ###################################
+
+  # Enable Flatpak
+  services.flatpak.enable = true;
 
   # Enable other architectures for emulation
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
@@ -18,15 +22,6 @@
   # Enable steam
   programs.steam = {
     enable = true;
-    package = pkgs.steam.override {
-      #  Enable NVidia Offloading for steam games
-      extraEnv = {
-        __NV_PRIME_RENDER_OFFLOAD = "1";
-        __NV_PRIME_RENDER_OFFLOAD_PROVIDER = "NVIDIA-G0";
-        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-        __VK_LAYER_NV_optimus = "NVIDIA_only";
-      };
-    };
   };
 
   # Enable xpadneo
@@ -41,15 +36,18 @@
   # Configure Hardware specificities for this Laptop #
   ####################################################
 
+  imports = [
+    hardwareModules.common-cpu-intel
+    hardwareModules.common-gpu-nvidia-disable
+  ];
+
   # Configure for intel CPU
   nixpkgs.hostPlatform = "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = true;
-  hardware.enableRedistributableFirmware = true;
+
   boot.kernelModules = [
     "kvm-intel"
     "overlay"
     "br_netfilter"
-    "i915"
   ];
 
   # Enable kernel modules for peripherics
@@ -85,33 +83,19 @@
   services.fprintd.tod.enable = true;
   services.fprintd.tod.driver = pkgs.libfprint-2-tod1-goodix;
 
-  # Configure Graphics Card
-  hardware.graphics.extraPackages = with pkgs; [
-    intel-vaapi-driver
-    libvdpau-va-gl
-    intel-media-driver
-  ];
-
-  hardware.nvidia = {
-    open = false;
-    powerManagement = {
-      enable = true;
-      finegrained = true;
-    };
-    modesetting.enable = true;
-    prime = {
-      intelBusId = "PCI:0:2:0";
-      nvidiaBusId = "PCI:1:0:0";
-      offload = {
-        enable = true;
-        enableOffloadCmd = true;
-      };
-    };
-  };
-
-  # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = [ "nvidia" ];
-
   # Enable fwupd for firmware updates
+  hardware.enableRedistributableFirmware = true;
   services.fwupd.enable = true;
+
+  #####################
+  # Nix state version #
+  #####################
+
+  # This value determines the NixOS release from which the default
+  # settings for stateful data, like file locations and database versions
+  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # this value at the release version of the first install of this system.
+  # Before changing this value read the documentation for this option
+  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  system.stateVersion = "23.11"; # Did you read the comment?
 }

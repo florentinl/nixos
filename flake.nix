@@ -7,11 +7,15 @@
       url = "github:nix-community/lanzaboote";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-hardware = {
+      url = "github:NixOS/nixos-hardware/master";
+    };
   };
 
   outputs =
     {
       nixpkgs,
+      nixos-hardware,
       lanzaboote,
       ...
     }:
@@ -24,10 +28,15 @@
         }:
         {
           "${hostname}" = nixpkgs.lib.nixosSystem {
-            specialArgs = {
-              inherit hostname;
-              inherit user;
-            };
+            specialArgs =
+              let
+                hardwareModules = nixos-hardware.nixosModules;
+              in
+              {
+                inherit hostname;
+                inherit user;
+                inherit hardwareModules;
+              };
             system = platform;
             modules = [
               lanzaboote.nixosModules.lanzaboote
