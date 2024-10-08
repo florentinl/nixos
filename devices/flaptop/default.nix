@@ -22,6 +22,15 @@
   # Enable steam
   programs.steam = {
     enable = true;
+    package = pkgs.steam.override {
+      # Enable NVidia Offloading for steam games
+      extraEnv = {
+        __NV_PRIME_RENDER_OFFLOAD = "1";
+        __NV_PRIME_RENDER_OFFLOAD_PROVIDER = "NVIDIA-G0";
+        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+        __VK_LAYER_NV_optimus = "NVIDIA_only";
+      };
+    };
   };
 
   # Enable xpadneo
@@ -38,8 +47,19 @@
 
   imports = [
     hardwareModules.common-cpu-intel
-    hardwareModules.common-gpu-nvidia-disable
+    hardwareModules.common-gpu-nvidia
   ];
+
+  hardware.nvidia = {
+    open = true;
+    modesetting.enable = true;
+    prime = {
+      intelBusId = "PCI:0:2:0";
+      nvidiaBusId = "PCI:1:0:0";
+      offload.enable = true;
+      offload.enableOffloadCmd = true;
+    };
+  };
 
   # Configure for intel CPU
   nixpkgs.hostPlatform = "x86_64-linux";
