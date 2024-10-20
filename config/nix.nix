@@ -10,7 +10,7 @@
   ];
 
   programs.nix-ld = {
-    enable = true;
+    enable = false;
     libraries = with pkgs; [
       acl
       attr
