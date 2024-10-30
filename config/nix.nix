@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, user, ... }:
 {
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -9,8 +9,10 @@
     "flakes"
   ];
 
+  nix.settings.trusted-users = [ user.name ];
+
   programs.nix-ld = {
-    enable = false;
+    enable = true;
     libraries = with pkgs; [
       acl
       attr
@@ -30,6 +32,7 @@
       nspr
       nss
       stdenv.cc.cc
+      libgcc.lib
       util-linux
       zlib
       zstd
