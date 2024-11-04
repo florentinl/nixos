@@ -41,6 +41,24 @@
   virtualisation.virtualbox.host.enableExtensionPack = true;
   users.extraGroups.vboxusers.members = [ user.name ];
 
+  # Enable libvirtd (for Gnome Boxes)
+  environment.systemPackages = [ pkgs.gnome-boxes ];
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu.ovmf.enable = true;
+    qemu.ovmf.packages = [ pkgs.OVMFFull.fd ];
+    qemu.swtpm.enable = true;
+  };
+  systemd.tmpfiles.rules =
+    let
+      firmware = pkgs.runCommandLocal "qemu-firmware" { } ''
+        mkdir $out
+        cp ${pkgs.qemu}/share/qemu/firmware/*.json $out
+        substituteInPlace $out/*.json --replace ${pkgs.qemu} /run/current-system/sw
+      '';
+    in
+    [ "L+ /var/lib/qemu/firmware - - - - ${firmware}" ];
+
   ####################################################
   # Configure Hardware specificities for this Laptop #
   ####################################################

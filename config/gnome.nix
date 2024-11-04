@@ -8,7 +8,6 @@
 
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.gdm.wayland = true;
   services.xserver.desktopManager.gnome.enable = true;
 
   # Exclude a few gnome packages
@@ -28,7 +27,7 @@
   };
 
   # Adwaita Icon Theme
-  environment.systemPackages = with pkgs; [ adwaita-icon-theme ];
+  # environment.systemPackages = with pkgs; [ adwaita-icon-theme ];
 
   programs.dconf.enable = true;
 }
