@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  config,
   user,
   hardwareModules,
   ...
@@ -69,6 +70,7 @@
   ];
 
   hardware.nvidia = {
+    package = config.boot.kernelPackages.nvidiaPackages.beta;
     open = true;
     modesetting.enable = true;
     prime = {

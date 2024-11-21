@@ -26,8 +26,8 @@
     package = pkgs.gnomeExtensions.gsconnect;
   };
 
-  # Adwaita Icon Theme
-  # environment.systemPackages = with pkgs; [ adwaita-icon-theme ];
+  # Enable Wayland for Chromium derivatives
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   programs.dconf.enable = true;
 }
