@@ -12,7 +12,7 @@
   nix.settings.trusted-users = [ user.name ];
 
   programs.nix-ld = {
-    enable = true;
+    enable = false;
     libraries = with pkgs; [
       acl
       attr

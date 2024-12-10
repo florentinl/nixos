@@ -26,8 +26,9 @@
     package = pkgs.gnomeExtensions.gsconnect;
   };
 
-  # Enable Wayland for Chromium derivatives
+  # Enable Wayland for Chromium derivatives and QT apps
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  # environment.sessionVariables.QT_QPA_PLATFORM = "wayland";
 
   programs.dconf.enable = true;
 }
